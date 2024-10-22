@@ -1,2 +1,3 @@
 # sistemas_distribuidos
-Sistemas Distribuídos
+
+Implementação dos comandos **OPTIONS e PATH**. 
