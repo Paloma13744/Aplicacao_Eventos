@@ -1,0 +1,3 @@
+Implementação dos comandos **OPTIONS e PATH**. Criação com interface gráfica, um front para essa aplicação. 
+Usar HTML e criar um código com javascript.
+Abrir e ter uma tabela, campo de texto que conforme  vai digitando aparece alguma coisa na lista (mudar o get para adicionar se contains o registro) e do lado ter um botão para alterar ou deletar.
