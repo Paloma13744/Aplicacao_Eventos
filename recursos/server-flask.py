@@ -5,10 +5,13 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+# Define a constant for the filename
+DATA_FILE = 'data.txt'
+
 @app.route('/', methods=['GET'])
 def query_records():
     name = request.args.get('name')
-    with open('data.txt', 'r') as f:
+    with open(DATA_FILE, 'r') as f:
         data = f.read()
         records = json.loads(data)
         for record in records:
@@ -19,14 +22,14 @@ def query_records():
 @app.route('/', methods=['POST'])
 def create_record():
     record = json.loads(request.data)
-    with open('data.txt', 'r') as f:
+    with open(DATA_FILE, 'r') as f:
         data = f.read()
     if not data:
         records = [record]
     else:
         records = json.loads(data)
         records.append(record)
-    with open('data.txt', 'w') as f:
+    with open(DATA_FILE, 'w') as f:
         f.write(json.dumps(records, indent=2))
     return jsonify(record)
 
@@ -34,30 +37,59 @@ def create_record():
 def update_record():
     record = json.loads(request.data)
     new_records = []
-    with open('data.txt', 'r') as f:
+    with open(DATA_FILE, 'r') as f:
         data = f.read()
         records = json.loads(data)
     for r in records:
         if r['name'] == record['name']:
             r['email'] = record['email']
         new_records.append(r)
-    with open('data.txt', 'w') as f:
+    with open(DATA_FILE, 'w') as f:
         f.write(json.dumps(new_records, indent=2))
     return jsonify(record)
     
 @app.route('/', methods=['DELETE'])
-def delte_record():
+def delete_record():  # Fix the typo in the function name
     record = json.loads(request.data)
     new_records = []
-    with open('data.txt', 'r') as f:
+    with open(DATA_FILE, 'r') as f:
         data = f.read()
         records = json.loads(data)
         for r in records:
             if r['name'] == record['name']:
                 continue
             new_records.append(r)
-    with open('data.txt', 'w') as f:
+    with open(DATA_FILE, 'w') as f:
         f.write(json.dumps(new_records, indent=2))
     return jsonify(record)
+
+
+@app.route('/', methods=['OPTIONS'])
+def options():
+    return jsonify({
+        'GET': 'Retrieve records',
+        'POST': 'Create a new record',
+        'PUT': 'Update an existing record',
+        'DELETE': 'Delete a record',
+        'PATCH': 'Partially update a record'
+    }), 200
+
+@app.route('/', methods=['PATCH'])
+def patch_record():
+    record = json.loads(request.data)
+    new_records = []
+    with open(DATA_FILE, 'r') as f:
+        data = f.read()
+        records = json.loads(data)
+    for r in records:
+        if r['name'] == record['name']:
+            r.update(record)  # Atualiza parcialmente
+        new_records.append(r)
+    with open(DATA_FILE, 'w') as f:
+        f.write(json.dumps(new_records, indent=2))
+    return jsonify(record)
+
+
+
 
 app.run(debug=True)
