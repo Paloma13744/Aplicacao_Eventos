@@ -8,7 +8,7 @@ app = Flask(__name__)
 # Define a constant for the filename
 DATA_FILE = 'data.txt'
 
-@app.route('/', methods=['GET'])
+@app.route('/api/records', methods=['GET'])
 def query_records():
     name = request.args.get('name')
     with open(DATA_FILE, 'r') as f:
@@ -19,7 +19,7 @@ def query_records():
                 return jsonify(record)
         return jsonify({'error': 'data not found'})
 
-@app.route('/', methods=['POST'])
+@app.route('/api/records', methods=['POST'])
 def create_record():
     record = json.loads(request.data)
     with open(DATA_FILE, 'r') as f:
@@ -33,7 +33,7 @@ def create_record():
         f.write(json.dumps(records, indent=2))
     return jsonify(record)
 
-@app.route('/', methods=['PUT'])
+@app.route('/api/records', methods=['PUT'])
 def update_record():
     record = json.loads(request.data)
     new_records = []
@@ -47,9 +47,9 @@ def update_record():
     with open(DATA_FILE, 'w') as f:
         f.write(json.dumps(new_records, indent=2))
     return jsonify(record)
-    
-@app.route('/', methods=['DELETE'])
-def delete_record():  # Fix the typo in the function name
+
+@app.route('/api/records', methods=['DELETE'])
+def delete_record():
     record = json.loads(request.data)
     new_records = []
     with open(DATA_FILE, 'r') as f:
@@ -63,8 +63,7 @@ def delete_record():  # Fix the typo in the function name
         f.write(json.dumps(new_records, indent=2))
     return jsonify(record)
 
-
-@app.route('/', methods=['OPTIONS'])
+@app.route('/api/records', methods=['OPTIONS'])
 def options():
     return jsonify({
         'GET': 'Retrieve records',
@@ -74,7 +73,7 @@ def options():
         'PATCH': 'Partially update a record'
     }), 200
 
-@app.route('/', methods=['PATCH'])
+@app.route('/api/records', methods=['PATCH'])
 def patch_record():
     record = json.loads(request.data)
     new_records = []
@@ -88,8 +87,6 @@ def patch_record():
     with open(DATA_FILE, 'w') as f:
         f.write(json.dumps(new_records, indent=2))
     return jsonify(record)
-
-
 
 
 app.run(debug=True)

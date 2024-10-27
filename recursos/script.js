@@ -1,64 +1,20 @@
-const API_URL = 'http://localhost:5000/';
+const apiUrl = 'http://127.0.0.1:5000/api/records';  // URL da API
 
-async function fetchRecords() {
-    const response = await fetch(API_URL);
-    const records = await response.json();
-    updateTable(records);
+// Função para buscar e exibir registros
+function searchRecords() {
+    const searchTerm = document.getElementById('search').value;
+    fetch(apiUrl + '?name=' + searchTerm)
+        .then(response => response.json())
+        .then(data => {
+            displayRecords(data);
+        })
+        .catch(error => console.error('Erro:', error));
 }
 
-async function createRecord() {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email }),
-    });
-
-    if (response.ok) {
-        await fetchRecords();
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-    }
-}
-
-async function deleteRecord(name) {
-    const response = await fetch(API_URL, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name }),
-    });
-
-    if (response.ok) {
-        await fetchRecords();
-    }
-}
-
-async function updateRecord(name) {
-    const email = prompt('Novo E-mail:');
-    if (email) {
-        const response = await fetch(API_URL, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ name, email }),
-        });
-
-        if (response.ok) {
-            await fetchRecords();
-        }
-    }
-}
-
-function updateTable(records) {
-    const recordsBody = document.getElementById('recordsBody');
-    recordsBody.innerHTML = '';
+// Função para exibir registros na tabela
+function displayRecords(records) {
+    const tbody = document.querySelector('#recordsTable tbody');
+    tbody.innerHTML = '';
 
     records.forEach(record => {
         const row = document.createElement('tr');
@@ -66,23 +22,85 @@ function updateTable(records) {
             <td>${record.name}</td>
             <td>${record.email}</td>
             <td>
-                <button onclick="updateRecord('${record.name}')">Alterar</button>
+                <button onclick="editRecord('${record.name}', '${record.email}')">Editar</button>
                 <button onclick="deleteRecord('${record.name}')">Deletar</button>
             </td>
         `;
-        recordsBody.appendChild(row);
+        tbody.appendChild(row);
     });
 }
 
-function searchRecords() {
-    const query = document.getElementById('search').value.toLowerCase();
-    const rows = document.querySelectorAll('#recordsBody tr');
+// Função para criar ou atualizar um registro
+function createOrUpdateRecord() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
 
-    rows.forEach(row => {
-        const name = row.cells[0].textContent.toLowerCase();
-        row.style.display = name.includes(query) ? '' : 'none';
+    if (!name || !email) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+
+    const method = records.some(record => record.name === name) ? 'PUT' : 'POST';
+    fetch(apiUrl, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('Erro ao salvar o registro');
+        return response.json();
+    })
+    .then(data => {
+        alert('Registro salvo com sucesso!');
+        searchRecords();  // Atualiza a lista
+        clearFields();
+    })
+    .catch(error => {
+        console.error('Erro:', error);
+        alert('Erro ao salvar o registro. Tente novamente.');
     });
 }
 
-// Carregar registros ao iniciar
-fetchRecords();
+// Função para editar um registro
+function editRecord(name, email) {
+    document.getElementById('name').value = name;
+    document.getElementById('email').value = email;
+}
+
+// Função para deletar um registro
+function deleteRecord(name) {
+    if (confirm('Você tem certeza que deseja deletar este registro?')) {
+        fetch(apiUrl, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro ao deletar o registro');
+            return response.json();
+        })
+        .then(data => {
+            alert('Registro deletado com sucesso!');
+            searchRecords();  // Atualiza a lista
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao deletar o registro. Tente novamente.');
+        });
+    }
+}
+
+// Limpar campos de entrada
+function clearFields() {
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+}
+
+// Inicializa a busca ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    searchRecords();
+});

@@ -1,26 +1,85 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-h1, h2 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    background-color: #f4f4f4;
     color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    height: 50vh;
+
+
 }
 
-input {
-    margin: 5px;
+.container {
+    margin-right: 20px;
+    padding: 0 20px;
+    /* Adiciona preenchimento interno */
+}
+
+h2 {
+    color: #333;
+
+}
+
+h3 {
+    color: #333;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    
+
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 300px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+
+}
+
+button {
+    width: 100px;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #125ba0e5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+
+}
+
+button:hover {
+    background-color: #4d4f64e3;
+    /* Cor mais escura ao passar o mouse */
 }
 
 table {
-    width: 100%;
+    margin-top: 20px;
     border-collapse: collapse;
+    width: 55%;
+    /* Largura da tabela */
 }
 
-table, th, td {
-    border: 1px solid black;
-}
-
-th, td {
+th,
+td {
     padding: 10px;
     text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #f8f9fa;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
 }

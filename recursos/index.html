@@ -1,31 +1,37 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento de Registros</title>
+    <title>Gerenciador de Registro</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <h1>Gerenciamento de Registros</h1>
-    <input type="text" id="name" placeholder="Nome">
-    <input type="text" id="email" placeholder="E-mail">
-    <button onclick="createRecord()">Adicionar Registro</button>
 
-    <h2>Registros</h2>
-    <input type="text" id="search" placeholder="Buscar..." oninput="searchRecords()">
-    <table id="recordsTable">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody id="recordsBody">
-        </tbody>
-    </table>
+<body>
+    <div class="container">
+        <h2>Gerenciador de Registros</h2>
+
+        <input type="text" id="search" placeholder="Buscar por nome..." onkeyup="searchRecords()">
+
+        <h4>Criar/Atualizar Registro</h4>
+        <input type="text" id="name" placeholder="Nome"><br>
+        <input type="email" id="email" placeholder="Email"><br>
+        <button onclick="createOrUpdateRecord()">Salvar</button>
+
+        <table id="recordsTable">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Registros serão inseridos aqui -->
+            </tbody>
+        </table>
+    </div>
 
     <script src="script.js"></script>
 </body>
