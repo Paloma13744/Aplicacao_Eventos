@@ -38,7 +38,6 @@ Para rodar a aplicação, você precisará de:
 ``` bash
 pip install flask
 pip install flask-cors
-
 ```
 
 ## 📡 Endpoints da API
