@@ -6,5 +6,9 @@
   {
     "name": "Pedro",
     "email": "pedro@gmail.com"
+  },
+  {
+    "name": "Paloma",
+    "email": "paloma13744@gmail.com"
   }
 ]

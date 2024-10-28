@@ -8,7 +8,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Caminho completo para o arquivo data.txt
-DATA_FILE_PATH = 'C:/Users/thiago/Documents/Aplicacao_Eventos/recursos/data.txt'
+DATA_FILE_PATH = 'C:/Programas code/Aplicacao_Eventos/recursos/data.txt'
+
+
 
 def read_records():
     try:

@@ -1,58 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciador de Registro</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-gray-200">
 
-<div class="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg max-w-4xl">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Gerenciador de Registros</h2>
+    <div class="container mx-auto my-8 p-6 bg-white rounded-lg shadow-lg max-w-2xl">
+        <h2 class="text-3xl font-bold text-center text-blue-800 mb-6 font-verdana">Gerenciador de Registros</h2>
 
-    <div class="flex items-center mb-6">
-        <input type="text" id="search" placeholder="Buscar por nome..." class="border border-gray-300 rounded p-2 flex-grow mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <button onclick="searchRecords()" class="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-300">Buscar</button>
-    </div>
+        <div class="flex items-center mb-6">
+            <input type="text" id="search" placeholder="Buscar por nome..."
+                class="border border-gray-300 rounded p-2 w-4/5 mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button onclick="searchRecords()"
+                class="bg-blue-600 text-white rounded p-2 w-32 hover:bg-blue-700 transition duration-300">Buscar</button>
+        </div>
 
-    <h4 class="text-2xl font-semibold mb-4">Criar Registro</h4>
-    <div class="mb-4">
-        <input type="text" id="name" placeholder="Nome" class="border border-gray-300 rounded p-2 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-        <input type="email" id="email" placeholder="Email" class="border border-gray-300 rounded p-2 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-    </div>
-    <button onclick="createRecord()" class="bg-green-600 text-white rounded p-2 w-full hover:bg-green-700 transition duration-300">Criar Registro</button>
+        <h4 class="text-2xl font-semibold mb-4">Criar Registro</h4>
+        <div class="mb-4">
+            <input type="text" id="name" placeholder="Nome"
+                class="border border-gray-300 rounded p-2 w-4/5 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+            <input type="email" id="email" placeholder="Email"
+                class="border border-gray-300 rounded p-2 w-4/5 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+        </div>
+        <div class="flex justify-left">
+            <button onclick="createRecord()"
+                class= "bg-green-600 text-white rounded p-2 w-64 hover:bg-green-700 transition duration-300">Criar
+                Registro</button>
+        </div>
 
-    <h4 class="text-2xl font-semibold my-4">Registros</h4>
-    <div id="updateSection" class="mb-4 hidden">
-        <h5 class="text-lg font-semibold">Atualizar Registro</h5>
-        <input type="text" id="updateName" placeholder="Nome" class="border border-gray-300 rounded p-2 w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-        <input type="email" id="updateEmail" placeholder="Email" class="border border-gray-300 rounded p-2 w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-        <div class="flex justify-between">
-            <button onclick="updateRecord('PUT')" class="bg-green-700 text-white rounded p-2 mr-2 hover:bg-green-800 transition duration-300" >Atualizar (PUT)</button>
-            <button onclick="updateRecord('PATCH')" class="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-300">Atualizar (PATCH)</button>
+        <h4 class="text-2xl font-semibold my-4">Registros</h4>
+        <div id="updateSection" class="mb-4 hidden">
+            <h5 class="text-lg font-semibold">Atualizar Registro</h5>
+            <input type="text" id="updateName" placeholder="Nome"
+                class="border border-gray-300 rounded p-2 w-4/5 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+            <input type="email" id="updateEmail" placeholder="Email"
+                class="border border-gray-300 rounded p-2 w-4/5 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required />
+            <div class="flex justify-between">
+                <button onclick="updateRecord('PUT')"
+                    class="bg-green-700 text-white rounded p-2 mr-2 hover:bg-green-800 transition duration-300">Atualizar
+                    (PUT)</button>
+                <button onclick="updateRecord('PATCH')"
+                    class="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-300">Atualizar
+                    (PATCH)</button>
+            </div>
+        </div>
+
+        <table id="recordsTable" class="mt-6 w-full bg-gray-50 rounded-lg shadow-md">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="py-2 px-4 border">Nome</th>
+                    <th class="py-2 px-4 border">Email</th>
+                    <th class="py-2 px-4 border">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Registros serão inseridos aqui -->
+            </tbody>
+        </table>
+
+        <div class="mt-6">
+            <button onclick="fetchOptions()"
+                class="bg-blue-600 text-white rounded p-2 w-64  hover:bg-indigo-700 transition duration-300">Ver Métodos
+                Suportados</button>
+            <div id="optionsResponse" class="mt-4 bg-gray-100 p-4 rounded hidden"></div>
         </div>
     </div>
 
-    <table id="recordsTable" class="mt-6 w-full bg-gray-50 rounded-lg shadow-md">
-        <thead class="bg-gray-200">
-            <tr>
-                <th class="py-2 px-4 border">Nome</th>
-                <th class="py-2 px-4 border">Email</th>
-                <th class="py-2 px-4 border">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Registros serão inseridos aqui -->
-        </tbody>
-    </table>
-
-    <div class="mt-6">
-        <button onclick="fetchOptions()" class="bg-indigo-600 text-white rounded p-2 hover:bg-indigo-700 transition duration-300">Ver Métodos Suportados</button>
-        <div id="optionsResponse" class="mt-4 bg-gray-100 p-4 rounded hidden"></div>
-    </div>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
