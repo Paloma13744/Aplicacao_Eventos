@@ -28,8 +28,7 @@ Para rodar a aplicação, você precisará de:
 ## ⚙️ Instalação
 
 1. **Clone este repositório**:  
-   ``` bash
-   git clone https://github.com/Paloma13744/Aplicacao_Eventos.git
+   ``` bash  git clone https://github.com/Paloma13744/Aplicacao_Eventos.git
    ```
 
 
