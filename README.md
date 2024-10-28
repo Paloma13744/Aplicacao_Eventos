@@ -34,8 +34,7 @@ Para rodar a aplicação, você precisará de:
 
 2. **Instale as dependências necessárias:**:
     ```bash
-  pip install flask
-
+pip install flask
 pip install flask-cors
 ´´´
 
