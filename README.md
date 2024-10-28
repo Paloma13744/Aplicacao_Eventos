@@ -30,13 +30,13 @@ Para rodar a aplicação, você precisará de:
 1. **Clone este repositório**:
    ```bash
    git clone https://github.com/Paloma13744/Aplicacao_Eventos.git
-´´´
+```
 
 2. **Instale as dependências necessárias:**:
     ```bash
 pip install flask
 pip install flask-cors
-´´´
+```
 
 ## 📡 Endpoints da API
 A seguir estão os endpoints disponíveis na API:
