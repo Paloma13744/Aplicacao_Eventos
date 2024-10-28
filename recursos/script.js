@@ -1,9 +1,13 @@
 const apiUrl = 'http://127.0.0.1:5000/';
 let currentRecord = null;
 
+console.log('Arquivo JavaScript carregado');
+
 // Função para buscar registros
 function searchRecords() {
     const searchTerm = document.getElementById('search').value.trim();
+    console.log("Buscando registros para:", searchTerm);
+
     fetch(apiUrl + '?name=' + encodeURIComponent(searchTerm))
         .then(response => {
             if (!response.ok) {
@@ -12,6 +16,7 @@ function searchRecords() {
             return response.json();
         })
         .then(data => {
+            console.log('Dados recebidos:', data);
             displayRecords(Array.isArray(data) ? data : [data]);
         })
         .catch(error => {
@@ -31,7 +36,7 @@ function displayRecords(records) {
             <td class="py-2 px-4 border">${record.name}</td>
             <td class="py-2 px-4 border">${record.email}</td>
             <td class="py-2 px-4 border">
-                <button onclick="editRecord('${record.name}', '${record.email}', 'PUT')" class="bg-yellow-500 text-white rounded px-3 py-1 mr-2">Atualizar</button>
+                <button onclick="editRecord('${record.name}', '${record.email}')" class="bg-yellow-500 text-white rounded px-3 py-1 mr-2">Atualizar</button>
                 <button onclick="deleteRecord('${record.name}')" class="bg-red-500 text-white rounded px-3 py-1">Deletar</button>
             </td>
         `;
@@ -46,6 +51,7 @@ function editRecord(name, email) {
 
     currentRecord = { name, email };
     document.getElementById('updateSection').classList.remove('hidden');
+    console.log("Editando registro:", currentRecord);
 }
 
 // Função para criar registro
@@ -59,6 +65,7 @@ function createRecord() {
     }
 
     const record = { name, email };
+    console.log("Criando registro:", record);
 
     fetch(apiUrl, {
         method: 'POST',
@@ -67,8 +74,8 @@ function createRecord() {
     })
     .then(response => response.json())
     .then(data => {
-        clearFields();  // Limpa os campos após criação
-        searchRecords(); // Atualiza a tabela para mostrar o novo registro
+        clearFields();
+        searchRecords(); // Atualiza a tabela após criar o registro
     })
     .catch(error => {
         console.error('Erro ao criar registro:', error);
@@ -76,11 +83,21 @@ function createRecord() {
     });
 }
 
-// Função para atualizar registro
+// Função para atualizar registro (PUT ou PATCH)
 function updateRecord(method) {
-    let record = {
+    let record = method === 'PUT' ? {
+        name: document.getElementById('updateName').value.trim(),
+        email: document.getElementById('updateEmail').value.trim()
+    } : {
         email: document.getElementById('updateEmail').value.trim()
     };
+
+    if (!record.email) {
+        alert("Por favor, preencha o campo de email.");
+        return;
+    }
+
+    console.log(`Atualizando registro (${method}):`, record);
 
     fetch(apiUrl + '?name=' + encodeURIComponent(currentRecord.name), {
         method: method,
@@ -94,18 +111,19 @@ function updateRecord(method) {
         return response.json();
     })
     .then(data => {
-        searchRecords();
+        searchRecords(); // Atualiza a tabela após a atualização do registro
         clearUpdateFields();
     })
     .catch(error => {
-        console.error('Erro ao atualizar registro:', error);
-        alert('Erro ao atualizar registro: ' + error.message);
+        console.error(`Erro ao atualizar registro (${method}):`, error);
+        alert('Erro ao atualizar registro pois tem campos em branco: ' + error.message);
     });
 }
 
 // Função para deletar registro
 function deleteRecord(name) {
     const record = { name: name };
+    console.log("Deletando registro:", record);
 
     fetch(apiUrl, {
         method: 'DELETE',
@@ -119,7 +137,7 @@ function deleteRecord(name) {
         return response.json();
     })
     .then(data => {
-        searchRecords();
+        searchRecords(); // Atualiza a tabela após deletar o registro
     })
     .catch(error => {
         console.error('Erro ao deletar registro:', error);
@@ -141,6 +159,7 @@ function fetchOptions() {
             optionsResponse.innerHTML = '<h5 class="font-semibold">Métodos Suportados:</h5><ul class="list-disc ml-5">' + 
                 data.methods.map(method => `<li>${method}</li>`).join('') + '</ul>';
             optionsResponse.classList.remove('hidden');
+            console.log('Métodos suportados:', data.methods);
         })
         .catch(error => {
             console.error('Erro ao buscar métodos suportados:', error);

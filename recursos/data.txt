@@ -1,6 +1,10 @@
 [
   {
     "name": "Thiago",
-    "email": "thsall3@gmail.com"
+    "email": "thSalles99@gmail.com"
+  },
+  {
+    "name": "Pedro",
+    "email": "pedro@gmail.com"
   }
 ]
